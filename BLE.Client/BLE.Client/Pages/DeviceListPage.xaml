@@ -87,11 +87,21 @@
 
       </Grid>
     </ContentPage>
-    <ContentPage Title="System devices">
+    <!--<ContentPage IsVisible="False"  Title="System devices">
        <ListView ItemsSource="{Binding SystemDevices}" SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
                  RowHeight="80"
                  ItemTemplate="{StaticResource DeviceItemTemplate}"/>
-    </ContentPage>
-  </views:MvxTabbedPage.Children>
+    </ContentPage>-->
+        <ContentPage Title="Smart Cast Information">
+            
+            <Button Text="Connect To SmartCast" Command="{Binding StraightToData}"
+                                        WidthRequest="200"
+                        HeightRequest="75"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        BackgroundColor="DarkTurquoise"
+                        CornerRadius="40"/>
+        </ContentPage>
+    </views:MvxTabbedPage.Children>
 
 </views:MvxTabbedPage>

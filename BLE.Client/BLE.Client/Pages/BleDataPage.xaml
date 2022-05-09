@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<views:MvxTabbedPage x:TypeArguments="viewModels:BleDataViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+             xmlns:viewModels="clr-namespace:BLE.Client.ViewModels;assembly=BLE.Client"
+                      xmlns:forms="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+                      x:DataType="viewModels:BleDataViewModel"
+                      x:Class="BLE.Client.Pages.BleDataPage"
+                      x:Name="BleData"
+                      Title="DATA">
+    <!--<forms:ChartView  Chart="{Binding Chart}"  x:Name="Chart1" WidthRequest="400" HorizontalOptions="CenterAndExpand" HeightRequest="400">
+    </forms:ChartView>
+    -->
+    
+    <views:MvxTabbedPage.Resources>
+
+ 
+        <ResourceDictionary>
+            <DataTemplate x:Key="BleDataTemplate"> 
+                <ViewCell>
+                    <Grid>
+                        <Label Text="{Binding _force}"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ResourceDictionary>
+   
+
+    </views:MvxTabbedPage.Resources>
+    <views:MvxTabbedPage.Children>
+            <ContentPage Title="Data Setup">
+                <StackLayout>
+                    <StackLayout Margin="25">
+                        <StackLayout>
+                            <Label Text="Please (Push) the patient 'Weight Setter' prompt and the patient '[Weight Bearing Restriction] Setter' prompts."
+                                   HorizontalOptions="CenterAndExpand"
+                                   FontSize="Medium"
+                                   />
+                        </StackLayout>
+                        <StackLayout>
+                            <Label Text="Lock in your response by toggling the switch."
+                                   HorizontalOptions="CenterAndExpand"
+                                   FontSize="Medium"
+                                   />
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout Margin="50">
+                        <Button
+                        WidthRequest="200"
+                        HeightRequest="75"
+                        HorizontalOptions="CenterAndExpand"
+                        BackgroundColor="DarkTurquoise"
+                        CornerRadius="40"
+                        Text="Weight Setter"
+                        Command="{Binding SetWeight}"
+                        />
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Button
+                        WidthRequest="200"
+                        HeightRequest="75"
+                        HorizontalOptions="CenterAndExpand"
+                        CornerRadius="40"
+                        BackgroundColor="DarkTurquoise"
+                        Text="WBR Setter"
+                        Command="{Binding SetCompliance}"
+                        />
+                    </StackLayout>
+                    <StackLayout>
+                        <Switch
+                        IsToggled="{Binding DataIsSet}"
+                        />
+                    </StackLayout>
+                </StackLayout>
+            </ContentPage>
+        <ContentPage Title="Data" IsVisible="{Binding DataIsSet}">
+            <StackLayout>
+                <StackLayout Margin="20">
+                        <Label Text="Current applied weight" FontSize="Medium" HorizontalOptions="Center"/>
+                    </StackLayout>
+                    <StackLayout>
+                        <Label
+                            Text="{Binding CharacteristicValue}" 
+                            HorizontalOptions="Center"
+                            FontSize="Header"/>
+                    </StackLayout>
+                    <StackLayout>
+                    <Label Text="Do not exceed " FontSize="Large"/>
+                    <Label
+                        Text="{Binding ComplianceSet}"
+                        FontSize="Large"
+                        />
+                    <Label Text="% of your total body weight." FontSize="Large"/>
+                </StackLayout>
+                <!--
+                    <StackLayout>
+                        <Label 
+                            Text="{Binding WeightSet}"
+                            FontSize="Large"
+                                />
+                    </StackLayout>
+
+-->
+                <!--<forms:ChartView Chart="{Binding VisualTestChart}"
+                                HorizontalOptions="CenterAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                             HeightRequest="300"
+                             WidthRequest="200"
+                             
+                                
+                                                 >
+
+                                </forms:ChartView>-->
+                </StackLayout>
+            </ContentPage>
+ <!--         <ContentPage Title="Progressive Data">
+            <StackLayout>
+              <ScrollView>
+                    <ListView
+                        ItemTemplate="{StaticResource BleDataTemplate}"
+                        ItemsSource="{Binding SmartCastRawData}"
+                    />
+                </ScrollView>
+            </StackLayout>
+        </ContentPage>-->
+    </views:MvxTabbedPage.Children>
+</views:MvxTabbedPage>

@@ -41,7 +41,7 @@ namespace BLE.Client.ViewModels
 
         private async void LoadCharacteristics()
         {
-            _userDialogs.ShowLoading("Loading characteristics...");
+            
             try
             {
                 Characteristics = await _service.GetCharacteristicsAsync();
@@ -78,7 +78,8 @@ namespace BLE.Client.ViewModels
                         Options = new List<ActionSheetOption>()
                         {
                             new ActionSheetOption("Details", () => _navigation.Navigate<CharacteristicDetailViewModel,MvxBundle>(bundle)),
-                            new ActionSheetOption("Descriptors", () => _navigation.Navigate<DescriptorListViewModel,MvxBundle>(bundle))
+                            new ActionSheetOption("Descriptors", () => _navigation.Navigate<DescriptorListViewModel,MvxBundle>(bundle)),
+                            new ActionSheetOption("Data Points", () => _navigation.Navigate<BleDataViewModel,MvxBundle>(bundle))
                         }
                     });
                 }

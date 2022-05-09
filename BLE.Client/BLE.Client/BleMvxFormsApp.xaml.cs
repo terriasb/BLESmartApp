@@ -1,4 +1,4 @@
-﻿using MvvmCross;
+﻿    using MvvmCross;
 using MvvmCross.Forms.Core;
 using Plugin.BLE.Abstractions;
 

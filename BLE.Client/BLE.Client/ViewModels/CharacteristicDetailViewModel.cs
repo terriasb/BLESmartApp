@@ -20,8 +20,7 @@ namespace BLE.Client.ViewModels
         private bool _updatesStarted;
         public ICharacteristic Characteristic { get; private set; }
 
-        public string CharacteristicValue => Characteristic?.Value.ToHexString().Replace("-", " ");
-
+        public string CharacteristicValue => Characteristic?.StringValue;//.ToHexString();//.Replace("-", " ");
         public ObservableCollection<string> Messages { get; } = new ObservableCollection<string>();
 
         public string UpdateButtonText => _updatesStarted ? "Stop updates" : "Start updates";
@@ -168,6 +167,7 @@ namespace BLE.Client.ViewModels
                 Messages.Insert(0, $"Start updates");
 
                 await RaisePropertyChanged(() => UpdateButtonText);
+                
 
             }
             catch (Exception ex)
@@ -198,8 +198,10 @@ namespace BLE.Client.ViewModels
 
         private void CharacteristicOnValueUpdated(object sender, CharacteristicUpdatedEventArgs characteristicUpdatedEventArgs)
         {
-            Messages.Insert(0, $"{DateTime.Now.TimeOfDay} - Updated: {CharacteristicValue}");
+            //ConvertHex(CharacteristicValue);//
+            Messages.Insert(0, $"{DateTime.Now.TimeOfDay} - Updated: {CharacteristicValue}");//
             RaisePropertyChanged(() => CharacteristicValue);
+            //valueBle = CharacteristicValue;
         }
     }
 }

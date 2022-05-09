@@ -25,6 +25,7 @@ namespace BLE.Client.ViewModels
         private readonly IBluetoothLE _bluetoothLe;
         private readonly IUserDialogs _userDialogs;
         private readonly ISettings _settings;
+        private readonly IMvxNavigationService _navigation;
         private Guid _previousGuid;
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -44,7 +45,6 @@ namespace BLE.Client.ViewModels
         public MvxCommand<DeviceListItemViewModel> DisconnectCommand => new MvxCommand<DeviceListItemViewModel>(DisconnectDevice);
 
         public MvxCommand<DeviceListItemViewModel> ConnectDisposeCommand => new MvxCommand<DeviceListItemViewModel>(ConnectAndDisposeDevice);
-
         public ObservableCollection<DeviceListItemViewModel> Devices { get; set; } = new ObservableCollection<DeviceListItemViewModel>();
         public bool IsRefreshing => Adapter.IsScanning;
         public bool IsStateOn => _bluetoothLe.IsOn;
@@ -62,7 +62,7 @@ namespace BLE.Client.ViewModels
                 RaisePropertyChanged();
             }
         }
-
+        
         bool _useAutoConnect;
         public bool UseAutoConnect
         {
@@ -87,12 +87,13 @@ namespace BLE.Client.ViewModels
 
         readonly IPermissions _permissions;
 
-        public DeviceListViewModel(IBluetoothLE bluetoothLe, IAdapter adapter, IUserDialogs userDialogs, ISettings settings, IPermissions permissions) : base(adapter)
+        public DeviceListViewModel(IBluetoothLE bluetoothLe, IAdapter adapter, IUserDialogs userDialogs, ISettings settings, IPermissions permissions, IMvxNavigationService navigation) : base(adapter)
         {
             _permissions = permissions;
             _bluetoothLe = bluetoothLe;
             _userDialogs = userDialogs;
             _settings = settings;
+            _navigation = navigation;
             // quick and dirty :>
             _bluetoothLe.StateChanged += OnStateChanged;
             Adapter.DeviceDiscovered += OnDeviceDiscovered;
@@ -512,5 +513,47 @@ namespace BLE.Client.ViewModels
         {
             PreviousGuid = device.Id;
         });
+        public MvxCommand StraightToData => new MvxCommand(GoToBLEData);
+        private async void GoToBLEData()
+        {
+                   IDevice _device;
+            try
+            {
+                Adapter.ScanMode = ScanMode.LowLatency;
+                //_device = await Adapter.ConnectToKnownDeviceAsync(Guid.Parse("00000000-0000-0000-0000-b0b113670cb2"));
+                _device = await Adapter.ConnectToKnownDeviceAsync(Guid.Parse("00000000-0000-0000-0000-78db2fcda228"));
+                await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<BleDataViewModel, MvxBundle>(new MvxBundle(new Dictionary<string, string> { { DeviceIdKey, _device.Id.ToString() } }));
+            }
+            catch(Exception ex)
+            {
+                await _userDialogs.AlertAsync(ex.Message);
+            }
+        }
+        public MvxCommand FindSmartCast => new MvxCommand(ConnectToCast);
+        private async void ConnectToCast()
+        {
+            IDevice _device;
+            try
+            {
+                var r = await _userDialogs.PromptAsync(new PromptConfig
+                {
+                    Title = "Enter GUID with Dashes",
+                    Placeholder = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+                    InputType = InputType.Default,
+                    OkText = "Submit",
+                    MaxLength = 36,
+
+                });
+                var searchID = Guid.Parse(r.Text);
+                Adapter.ScanMode = ScanMode.LowLatency;
+                _device = await Adapter.ConnectToKnownDeviceAsync(searchID);
+                await Mvx.IoCProvider.Resolve<IMvxNavigationService>().Navigate<BleDataViewModel, MvxBundle>(new MvxBundle(new Dictionary<string, string> { { DeviceIdKey, _device.Id.ToString() } }));
+
+            }
+            catch (Exception ex)
+            {
+                await _userDialogs.AlertAsync(ex.Message);
+            }
+        }
     }
 }

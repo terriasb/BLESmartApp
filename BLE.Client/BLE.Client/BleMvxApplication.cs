@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace BLE.Client
 {
-    public class BleMvxApplication : MvxApplication
+    public class BleMvxApplication : MvxApplication //baseviewmodel
     {
         public override void Initialize()
         {
@@ -20,5 +20,7 @@ namespace BLE.Client
 
             RegisterAppStart<DeviceListViewModel>();
         }
+
+
     }
 }

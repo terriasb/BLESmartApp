@@ -72,7 +72,7 @@ namespace BLE.Client.ViewModels
                     var bundle = new MvxBundle(new Dictionary<string, string>(Bundle.Data) { { ServiceIdKey, value.Id.ToString() } });
                     _navigation.Navigate<CharacteristicListViewModel, MvxBundle>(bundle);
                 }
-
+                 
                 RaisePropertyChanged();
 
             }

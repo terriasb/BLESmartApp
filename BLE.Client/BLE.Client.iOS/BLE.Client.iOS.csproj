@@ -100,6 +100,7 @@
     <ITunesArtwork Include="iTunesArtwork" />
     <ITunesArtwork Include="iTunesArtwork@2x" />
     <Compile Include="LinkerPleaseInclude.cs" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MvvmCross.Plugins.BLE.iOS\MvvmCross.Plugins.BLE.iOS.csproj">

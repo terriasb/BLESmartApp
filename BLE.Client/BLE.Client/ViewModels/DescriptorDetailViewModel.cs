@@ -115,5 +115,6 @@ namespace BLE.Client.ViewModels
         {
             return text.Split(' ').Where(token => !string.IsNullOrEmpty(token)).Select(token => Convert.ToByte(token, 16)).ToArray();
         }
+
     }
 }
